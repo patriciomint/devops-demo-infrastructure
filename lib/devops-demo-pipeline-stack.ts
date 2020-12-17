@@ -3,12 +3,11 @@ import * as lambda from '@aws-cdk/aws-lambda'
 import * as ecr from '@aws-cdk/aws-ecr'
 import * as ecs from '@aws-cdk/aws-ecs'
 import * as iam from '@aws-cdk/aws-iam'
-import * as ecsPatterns from '@aws-cdk/aws-ecs-patterns'
 import * as acm from '@aws-cdk/aws-certificatemanager'
 import * as ec2 from '@aws-cdk/aws-ec2'
-import { App, CfnParameter, Stack, StackProps } from '@aws-cdk/core'
+import { CfnParameter, StackProps } from '@aws-cdk/core'
 import * as elbv2 from '@aws-cdk/aws-elasticloadbalancingv2'
-import { CompositePrincipal } from '@aws-cdk/aws-iam'
+
 
 export interface PipelineStackProps extends StackProps {
   readonly lambdaCode: lambda.CfnParametersCode
@@ -100,14 +99,25 @@ export class DevopsDemoPipelineStack extends cdk.Stack {
       vpc,
     })
 
-    ecsCluster.addCapacity('AsgSpot', {
+    const asg = ecsCluster.addCapacity('AsgSpot', {
       instanceType: new ec2.InstanceType('t2.micro'),
       spotPrice: '0.01',
       minCapacity: 2,
       desiredCapacity: 2,
     })
 
+    const asgSecurityGroup = new ec2.SecurityGroup(this, 'ASGSecurityGroup', {
+      vpc,
+      description: 'Allow http access on port 3000',
+      allowAllOutbound: true   // Can be set to false
+    });
+    asgSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3000), 'Allow http access on port 3000');
 
+    asg.addSecurityGroup(asgSecurityGroup)
+
+    asg.role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName(
+      'AmazonEC2ContainerRegistryReadOnly'
+    ))
 
     const baseTask = new ecs.Ec2TaskDefinition(this, 'DemoTaskDefinition', {
       family: 'roman-numeral-translator',
@@ -143,10 +153,11 @@ export class DevopsDemoPipelineStack extends cdk.Stack {
       vpc,
       port: 3000,
       protocol: elbv2.ApplicationProtocol.HTTP,
+
     })
 
-    const alb = new elbv2.ApplicationLoadBalancer(this, 'DemoAlb', {
-      loadBalancerName: 'DemoALB',
+    const alb = new elbv2.ApplicationLoadBalancer(this, 'DevopsDemoALB', {
+      loadBalancerName: 'DevopsDemoALB',
       vpc: vpc,
       internetFacing: true
     })
@@ -156,5 +167,7 @@ export class DevopsDemoPipelineStack extends cdk.Stack {
       protocol: elbv2.ApplicationProtocol.HTTPS,
       defaultTargetGroups: [targetGroup],
     })
+
+    asg.attachToApplicationTargetGroup(targetGroup)
   }
 }
