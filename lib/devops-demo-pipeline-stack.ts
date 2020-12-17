@@ -51,16 +51,24 @@ export class DevopsDemoPipelineStack extends cdk.Stack {
       statements: [
         new iam.PolicyStatement({
           resources: ['*'],
-          actions: ['ecr:GetAuthorizationToken'],
+          actions: [
+            'ecr:GetAuthorizationToken',
+            'ecs:RegisterTaskDefinition',
+            'ecs:UpdateService',
+            'ecs:DescribeServices',
+            'iam:PassRole',
+          ],
         }),
       ],
     })
+
+    const policyDocument = new iam.PolicyDocument()
 
     repository.grantPullPush(githubUser)
 
     const ecsCluster = new ecs.Cluster(this, 'DevopsDemoCluster', {
       clusterName: 'devops-demo-cluster',
-      vpc
+      vpc,
     })
 
     ecsCluster.addCapacity('AsgSpot', {
@@ -75,7 +83,7 @@ export class DevopsDemoPipelineStack extends cdk.Stack {
       targetType: elbv2.TargetType.INSTANCE,
       vpc,
       port: 3000,
-      protocol: elbv2.ApplicationProtocol.HTTP
+      protocol: elbv2.ApplicationProtocol.HTTP,
     })
 
     const alb = new elbv2.ApplicationLoadBalancer(this, 'DemoAlb', {
