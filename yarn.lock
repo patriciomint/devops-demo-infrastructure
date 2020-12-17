@@ -108,7 +108,7 @@
     "@aws-cdk/core" "1.78.0"
     constructs "^3.2.0"
 
-"@aws-cdk/aws-certificatemanager@1.78.0":
+"@aws-cdk/aws-certificatemanager@1.78.0", "@aws-cdk/aws-certificatemanager@^1.78.0":
   version "1.78.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-certificatemanager/-/aws-certificatemanager-1.78.0.tgz#f60e3a28ce8a8a2b475406787f62f2f888b2cdf1"
   dependencies:
@@ -294,6 +294,25 @@
     "@aws-cdk/core" "1.78.0"
     constructs "^3.2.0"
 
+"@aws-cdk/aws-ecs-patterns@^1.78.0":
+  version "1.78.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-ecs-patterns/-/aws-ecs-patterns-1.78.0.tgz#5f325620a3e1da46dbe2b580f014074ed81729ea"
+  dependencies:
+    "@aws-cdk/aws-applicationautoscaling" "1.78.0"
+    "@aws-cdk/aws-certificatemanager" "1.78.0"
+    "@aws-cdk/aws-ec2" "1.78.0"
+    "@aws-cdk/aws-ecs" "1.78.0"
+    "@aws-cdk/aws-elasticloadbalancingv2" "1.78.0"
+    "@aws-cdk/aws-events" "1.78.0"
+    "@aws-cdk/aws-events-targets" "1.78.0"
+    "@aws-cdk/aws-iam" "1.78.0"
+    "@aws-cdk/aws-route53" "1.78.0"
+    "@aws-cdk/aws-route53-targets" "1.78.0"
+    "@aws-cdk/aws-servicediscovery" "1.78.0"
+    "@aws-cdk/aws-sqs" "1.78.0"
+    "@aws-cdk/core" "1.78.0"
+    constructs "^3.2.0"
+
 "@aws-cdk/aws-ecs@1.78.0", "@aws-cdk/aws-ecs@^1.78.0":
   version "1.78.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-ecs/-/aws-ecs-1.78.0.tgz#aca8ad4e953a31f9b08a993df14592aa6423332d"
@@ -344,7 +363,7 @@
     "@aws-cdk/core" "1.78.0"
     constructs "^3.2.0"
 
-"@aws-cdk/aws-elasticloadbalancingv2@1.78.0":
+"@aws-cdk/aws-elasticloadbalancingv2@1.78.0", "@aws-cdk/aws-elasticloadbalancingv2@^1.78.0":
   version "1.78.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-elasticloadbalancingv2/-/aws-elasticloadbalancingv2-1.78.0.tgz#ac6a64a563ff7b417b4ca579a744a4647a9d2c42"
   dependencies:
@@ -391,7 +410,7 @@
     "@aws-cdk/core" "1.78.0"
     constructs "^3.2.0"
 
-"@aws-cdk/aws-iam@1.78.0":
+"@aws-cdk/aws-iam@1.78.0", "@aws-cdk/aws-iam@^1.78.0":
   version "1.78.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-iam/-/aws-iam-1.78.0.tgz#3cd5ef7fff0b85f1ca2a6d25211ed4b91f8c9048"
   dependencies:
